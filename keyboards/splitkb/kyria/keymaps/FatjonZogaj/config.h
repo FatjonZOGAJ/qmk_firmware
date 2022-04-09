@@ -16,6 +16,7 @@
 
 #pragma once
 
+#define MASTER_RIGHT
 #define SPLIT_USB_DETECT
 
 #ifdef RGBLIGHT_ENABLE

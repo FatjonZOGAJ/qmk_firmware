@@ -1,0 +1,5 @@
+for white kyria
+make splitkb/kyria/rev1:FatjonZogaj:avrdude
+
+NOTE: simply calling qmk compile or qmk flash does not seem to work!
+It uses kyria/rev2 instead of kyria/rev1 for some reason, even if it is defined through qmk config
