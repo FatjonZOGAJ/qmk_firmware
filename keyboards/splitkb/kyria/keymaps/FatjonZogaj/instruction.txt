@@ -1,4 +1,6 @@
 for white kyria
+# need to be in qmk folder
+cd ~/qmk_firmware/
 make splitkb/kyria/rev1:FatjonZogaj:avrdude
 
 NOTE: simply calling qmk compile or qmk flash does not seem to work!
