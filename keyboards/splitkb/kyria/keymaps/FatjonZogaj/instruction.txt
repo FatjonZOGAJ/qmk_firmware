@@ -1,7 +1,12 @@
-for white kyria
 # need to be in qmk folder
 cd ~/qmk_firmware/
+
+# for white keyboard
 make splitkb/kyria/rev1:FatjonZogaj:avrdude
+
+# for OLED one
+qmk compile -kb splitkb/kyria/rev1 -km FatjonZogaj 
+qmk flash -kb splitkb/kyria/rev1 -km FatjonZogaj -bl dfu
 
 NOTE: simply calling qmk compile or qmk flash does not seem to work!
 It uses kyria/rev2 instead of kyria/rev1 for some reason, even if it is defined through qmk config

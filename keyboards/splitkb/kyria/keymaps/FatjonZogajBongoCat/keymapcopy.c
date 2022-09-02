@@ -22,7 +22,7 @@ char wpm_str[10];
 
 enum layers {
     _QWERTY,
-    //_2WERTY, //pronounced "twerty," obviously
+    _2WERTY, //pronounced "twerty," obviously
     _LOWER,
     _RAISE,
     _ADJUST,
@@ -39,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * | CTRL   |   Y  |   X  |   C  |   V  |   B  | Win  |Ctrl  |  |Ctrl  | Win  |   N  |   M  | ,  < | . >  | /  ? |  - _   |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        | TG(1)| AltGr| Win  | Space| Esc  |  | Enter| Space| CTRL | Alt  |TG(2) |
+ *                        | TG(1)| AltGr| Win  | Space| Esc  |  | Enter| Space| CTRL | Alt  |TG(3) |
  *                        |      | DEL  | Lower| Shift| Raise|  | Lower| Raise| Menu |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_ESC,    KC_Q,    KC_W,   KC_E,   KC_R,   KC_T,                               KC_Z,    KC_U,    KC_I,    KC_O,       KC_P, KC_BSPC,
       KC_TAB,    KC_A,    KC_S,   KC_D,   KC_F,   KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
       KC_LCTL,   KC_Y,    KC_X,   KC_C,   KC_V,   KC_B,    KC_LGUI,  KC_LCTL,       KC_RCTL, KC_RGUI,     KC_N,    KC_M,   KC_COMM,  KC_DOT,  KC_SLSH, KC_MINS,
-                     TG(2), MT(MOD_RALT, KC_DEL), KC_LGUI, MT(MOD_LSFT, KC_SPACE),  LT(_LOWER, KC_ESC), LT(_RAISE, KC_ENT), LT(_LOWER, KC_SPC), MT(MOD_RCTL, KC_APP),  KC_LALT, TG(_ADJUST)
+                     TG(1), MT(MOD_RALT, KC_DEL), LT(3, KC_LGUI), MT(MOD_LSFT, KC_SPACE),  LT(2, KC_ESC), LT(3, KC_ENT), LT(2, KC_SPC), MT(MOD_RCTL, KC_APP),  KC_LALT, TG(2)
     ),
 /*
  * Lower Layer: Symbols
@@ -76,9 +76,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |   1  |  2   |  3   |  4   |  5   |                              |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right| ,    |        |
+ * |        |      | Prev | Play | Next | VolUp|                              | Left | Down | Up   | Right|      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | Mute | VolDn|      |      |  |      |      | Home | Pdown| PUp  | End  | .    |        |
+ * |        |      |      |      | Mute | VolDn|      |      |  |      |      | Home | Pdown| PUp  | End  |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -86,8 +86,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_RAISE] = LAYOUT(
       _______, KC_1,      KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-      _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_COMM, _______,
-      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_DOT, _______,
+      _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
+      _______, _______, _______, _______, KC_MUTE, KC_VOLD, _______, _______, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -151,14 +151,14 @@ static void render_status(void) {
         case _QWERTY:
             oled_write_P(PSTR("QWERTY"), false);
             break;
-        //case _2WERTY:
-        //    oled_write_P(PSTR("2WERTY"), false);
-        //    break;
+        case _2WERTY:
+            oled_write_P(PSTR("2WERTY"), false);
+            break;
         case _LOWER:
-            oled_write_P(PSTR("SYMBOLS"), false);
+            oled_write_P(PSTR("Symbols"), false);
             break;
         case _RAISE:
-            oled_write_P(PSTR("NUM NAV"), false);
+            oled_write_P(PSTR("Num Nav"), false);
             break;
         case _ADJUST:
             oled_write_P(PSTR("RGB FN"), false);
@@ -169,7 +169,7 @@ static void render_status(void) {
 
     //Host Keyboard LED Status
     led_t led_state = host_keyboard_led_state();
-    //oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("       "), false);
+    oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("       "), false);
     oled_write_P(led_state.caps_lock ? PSTR("CAPS ") : PSTR("       "), false);
     oled_write_P(led_state.scroll_lock ? PSTR("SCRL") : PSTR("       "), false);
 }
@@ -177,12 +177,12 @@ static void render_status(void) {
 
 // WPM-responsive animation stuff here
 #define IDLE_FRAMES 5
-#define IDLE_SPEED 40 // below this wpm value your animation will idle
+#define IDLE_SPEED 10 // below this wpm value your animation will idle
 
 // #define PREP_FRAMES 1 // uncomment if >1
 
 #define TAP_FRAMES 2
-#define TAP_SPEED 60 // above this wpm value typing animation to triggere
+#define TAP_SPEED 20 // above this wpm value typing animation to triggere
 
 #define ANIM_FRAME_DURATION 200 // how long each frame lasts in ms
 // #define SLEEP_TIMER 60000 // should sleep after this period of 0 wpm, needs fixing
@@ -316,54 +316,28 @@ void oled_task_user(void) {
 #endif
 
 #ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 1) {
-       //switch (biton32(layer_state)) {
-       //      case QWERTY:
-                 // Scrolling with PageUp and PgDn.
-                 if (clockwise) {
-                     tap_code(KC_PGDN);
-                 } else {
-                     tap_code(KC_PGUP);
-                 }
-      //           break;
-      //      }
+void encoder_update_user(uint8_t index, bool clockwise) {
+    switch(biton32(layer_state)){
+        case 1:
+            if (clockwise) {
+                tap_code16(C(KC_TAB));
+            } else {
+                tap_code16(S(C(KC_TAB)));
+            }
+            break;
+        default:
+            if (clockwise) {
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                }
+                alt_tab_timer = timer_read();
+                tap_code16(KC_TAB);
+            } else {
+                tap_code16(S(KC_TAB));
+                }
+            break;
     }
-    else {
-      // switch (biton32(layer_state)) {
-      //       case QWERTY:
-      //       default:
-                 // Volume control.
-                 if (clockwise) {
-                     tap_code(KC_VOLU);
-                 } else {
-                     tap_code(KC_VOLD);
-                 }
-      //           break;
-      //   }
-     }  
-   // switch(biton32(layer_state)){
-   //     case 1:
-   //         if (clockwise) {
-   //             tap_code16(C(KC_TAB));
-   //         } else {
-   //             tap_code16(S(C(KC_TAB)));
-   //         }
-   //         break;
-   //     default:
-   //         if (clockwise) {
-   //             if (!is_alt_tab_active) {
-   //                 is_alt_tab_active = true;
-   //                 register_code(KC_LALT);
-   //             }
-   //             alt_tab_timer = timer_read();
-   //             tap_code16(KC_TAB);
-   //         } else {
-   //             tap_code16(S(KC_TAB));
-   //             }
-   //         break;
-   // }
-    return clockwise;
 }
 void matrix_scan_user(void) {
     if (is_alt_tab_active) {
